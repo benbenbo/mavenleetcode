@@ -16,7 +16,7 @@ public class LeetCode05 {
     @Test
     public void testAll() {
         String s = "aba453aba";
-        String max = test02(s);
+        String max = test02Opt(s);
         System.out.println("最大回文子串为：" + max);
     }
 
@@ -87,6 +87,43 @@ public class LeetCode05 {
                     int i2 = i1 + arr[i][j] - 1;
                     if (i2 == j) {
                         maxLen = arr[i][j];
+                        maxEnd = i;
+                    }
+                }
+            }
+        }
+        return s.substring(maxEnd - maxLen + 1, maxEnd + 1);
+    }
+
+    /**
+     * 动态规划法-优化空间复杂度
+     *
+     * @return
+     */
+    public String test02Opt(String s) {
+        int len = s.length();
+        int maxLen = 0;
+        int maxEnd = 0;
+        String s2 = new StringBuilder(s).reverse().toString();
+        //动态规划数组
+        int[] arr = new int[len];
+        //填充数组
+        for (int i = 0; i < len; i++) {
+            for (int j = len - 1; j > -1; j--) {
+                if (s.charAt(i) == s2.charAt(j)) {
+                    if (i == 0 || j == 0) {
+                        arr[j] = 1;
+                    } else {
+                        arr[j] = arr[j - 1] + 1;
+                    }
+                } else {
+                    arr[j] = 0;
+                }
+                if (arr[j] > maxLen) {
+                    int i1 = len - 1 - i;
+                    int i2 = i1 + arr[j] - 1;
+                    if (i2 == j) {
+                        maxLen = arr[j];
                         maxEnd = i;
                     }
                 }
