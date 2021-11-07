@@ -140,7 +140,6 @@ public class LeetCode05 {
      */
     public String test03(String s) {
         int len = s.length();
-        int maxLen = 0;
         String maxStr = "";
         boolean[][] P = new boolean[len][len];
         for (int i = 1; i <= len; i++) {
@@ -151,7 +150,7 @@ public class LeetCode05 {
                     break;
                 }
                 P[start][end] = (i == 1 || i == 2 || P[start + 1][end - 1]) && s.charAt(start) == s.charAt(end);
-                if (P[start][end] && i > maxLen) {
+                if (P[start][end] && i > maxStr.length()) {
                     maxStr = s.substring(start, end + 1);
                 }
             }
@@ -173,7 +172,29 @@ public class LeetCode05 {
         for (int i = len - 1; i > -1; i--) {
             for (int j = i; j < len; j++) {
                 P[i][j] = ((j - i + 1 < 3) || P[i + 1][j - 1]) && s.charAt(i) == s.charAt(j);
-                if (P[i][j] && j - i + 1 > maxLen) {
+                if (P[i][j] && j - i + 1 > maxStr.length()) {
+                    maxStr = s.substring(i, j + 1);
+                }
+            }
+        }
+        return maxStr;
+    }
+
+    /**
+     * 暴力破解法-优化
+     * 二阶优化-P改为一维数组
+     *
+     * @return
+     */
+    public String test03Opt2(String s) {
+        int len = s.length();
+        int maxLen = 0;
+        String maxStr = "";
+        boolean[] P = new boolean[len];
+        for (int i = len - 1; i > -1; i--) {
+            for (int j = len - 1; j >= i; j--) {
+                P[j] = ((j - i + 1 < 3) || P[j - 1]) && s.charAt(i) == s.charAt(j);
+                if (P[j] && j - i + 1 > maxStr.length()) {
                     maxStr = s.substring(i, j + 1);
                 }
             }
