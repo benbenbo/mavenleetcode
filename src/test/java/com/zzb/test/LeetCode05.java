@@ -16,7 +16,7 @@ public class LeetCode05 {
     @Test
     public void testAll() {
         String s = "aba453aba";
-        String max = test03(s);
+        String max = test03Opt1(s);
         System.out.println("最大回文子串为：" + max);
     }
 
@@ -153,6 +153,28 @@ public class LeetCode05 {
                 P[start][end] = (i == 1 || i == 2 || P[start + 1][end - 1]) && s.charAt(start) == s.charAt(end);
                 if (P[start][end] && i > maxLen) {
                     maxStr = s.substring(start, end + 1);
+                }
+            }
+        }
+        return maxStr;
+    }
+
+    /**
+     * 暴力破解法-优化
+     * 二阶优化-将遍历改为按照数组遍历，而不是长度+起始下标
+     *
+     * @return
+     */
+    public String test03Opt1(String s) {
+        int len = s.length();
+        int maxLen = 0;
+        String maxStr = "";
+        boolean[][] P = new boolean[len][len];
+        for (int i = len - 1; i > -1; i--) {
+            for (int j = i; j < len; j++) {
+                P[i][j] = ((j - i + 1 < 3) || P[i + 1][j - 1]) && s.charAt(i) == s.charAt(j);
+                if (P[i][j] && j - i + 1 > maxLen) {
+                    maxStr = s.substring(i, j + 1);
                 }
             }
         }
